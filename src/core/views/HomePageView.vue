@@ -2,8 +2,11 @@
 import HelloWorld from '@/core/components/HelloWorld.vue'
 </script>
 
+<script>
+</script>
+
 <template>
   <main>
-      <HelloWorld />
+    <HelloWorld />
   </main>
 </template>
