@@ -8,9 +8,8 @@ const sessionStore = useSessionStore()
 onMounted(async () => {
   await sessionStore.fetchSession()
   if (sessionStore.error) {
-    await sessionStore.login("dev", "dev")
-    if (!sessionStore.error)
-      await sessionStore.fetchSession()
+    await sessionStore.login('dev', 'dev')
+    if (!sessionStore.error) await sessionStore.fetchSession()
   }
 })
 </script>
@@ -24,17 +23,11 @@ onMounted(async () => {
 
       <div v-if="sessionStore.loading">Loading session...</div>
 
-      <div v-else-if="sessionStore.session">
-        Logged in as: {{ sessionStore.session.username }}
-      </div>
+      <div v-else-if="sessionStore.session">Logged in as: {{ sessionStore.session.username }}</div>
 
-      <div v-else>
-        Not logged in.
-      </div>
+      <div v-else>Not logged in.</div>
 
-      <div v-if="sessionStore.error" class="text-red-600">
-        Error: {{ sessionStore.error }}
-      </div>
+      <div v-if="sessionStore.error" class="text-red-600">Error: {{ sessionStore.error }}</div>
     </section>
   </LayoutDefault>
 </template>
