@@ -5,8 +5,13 @@ import { useSessionStore } from '@/core/stores/session'
 
 const sessionStore = useSessionStore()
 
-onMounted(() => {
-  sessionStore.fetchSession()
+onMounted(async () => {
+  await sessionStore.fetchSession()
+  if (sessionStore.error) {
+    await sessionStore.login("dev", "dev")
+    if (!sessionStore.error)
+      await sessionStore.fetchSession()
+  }
 })
 </script>
 
