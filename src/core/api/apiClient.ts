@@ -39,14 +39,14 @@ function parseError<E extends string>(error: unknown) {
       return error.response.data as ApiError<E>
     }
     return {
-      success: false,
+      success: false as const,
       errorCode: 'internal_error' as E,
       errorMessage: 'No response received from server',
     }
   }
 
   return {
-    success: false,
+    success: false as const,
     errorCode: 'internal_error' as E,
     errorMessage: 'Unknown error while trying to call an API with axios',
   }

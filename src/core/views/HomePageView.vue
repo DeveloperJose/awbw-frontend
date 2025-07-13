@@ -1,19 +1,12 @@
 <script setup lang="ts">
 import { onMounted } from 'vue'
 import LayoutDefault from '@/core/layouts/LayoutDefault.vue'
-import { getSession, login } from '../api/sessionApi'
+import { useSessionStore } from '@/core/stores/session'
 
-onMounted(async () => {
-  let loginResponse = await login('dev', 'dev')
-  let sessionResponse = await getSession()
-  if (!loginResponse.success) {
-    console.error('Login failed', loginResponse)
-  }
-  if (!sessionResponse.success) {
-    console.error('Session failed', sessionResponse)
-  } else {
-    console.log('Session success', sessionResponse)
-  }
+const sessionStore = useSessionStore()
+
+onMounted(() => {
+  sessionStore.fetchSession()
 })
 </script>
 
@@ -24,7 +17,19 @@ onMounted(async () => {
       <img :src="'/terrain/co-portraits/nell.png'" />
       <div class="bg-red-500 text-white p-4">If this is red with padding, the secret CSS is working!</div>
 
-      <!--<div v-if="sessionResponse?.success">Logged In: {{ sessionResponse.username }}</div>-->
+      <div v-if="sessionStore.loading">Loading session...</div>
+
+      <div v-else-if="sessionStore.session">
+        Logged in as: {{ sessionStore.session.username }}
+      </div>
+
+      <div v-else>
+        Not logged in.
+      </div>
+
+      <div v-if="sessionStore.error" class="text-red-600">
+        Error: {{ sessionStore.error }}
+      </div>
     </section>
   </LayoutDefault>
 </template>
