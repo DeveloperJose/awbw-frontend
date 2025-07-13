@@ -35,7 +35,6 @@ export default defineConfig(({ mode }) => {
     resolve: {
       alias: {
         '@': fileURLToPath(new URL('./src', import.meta.url)),
-        // '/terrain': fileURLToPath(new URL('../public_html/terrain', import.meta.url)),
         // '/terrain': new URL('https://awbw.amarriner.com/terrain'),
         // '/terrain': new URL('http://localhost:5173/terrain'),
         // '~': new URL('https://awbw.amarriner.com'),
