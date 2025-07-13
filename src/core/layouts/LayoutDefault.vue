@@ -3,11 +3,11 @@ import Navbar from '@/core/components/Navbar.vue'
 import Footer from '@/core/components/Footer.vue'
 
 // const backgroundImage = "background: url(/terrain/macroland250.png)"
-const backgroundImage = "";
+const backgroundImage = ''
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col auto-scroll-bg" :style=backgroundImage>
+  <div class="min-h-screen flex flex-col auto-scroll-bg" :style="backgroundImage">
     <Navbar />
     <main class="flex-grow">
       <slot />

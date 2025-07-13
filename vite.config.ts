@@ -13,6 +13,12 @@ export default defineConfig(({ mode }) => {
   // Check if this is an AWBW Developer or a regular user
   if (env.VITE_PUBLIC_DIR && env.VITE_PUBLIC_DIR.includes('public_html')) {
     console.log('Preparing build for an official AWBW Developer')
+    proxy = {
+      '/api': {
+        target: 'http://localhost',
+        changeOrigin: true,
+      },
+    }
   } else {
     console.log('Preparing build for a regular developer')
     proxy = {
