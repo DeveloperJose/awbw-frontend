@@ -8,48 +8,46 @@ const api = axios.create({
   },
 })
 
-export type ApiSuccess<T> = {
+export type ApiSuccess<T> = T & {
   success: true
-} & T
-
-export type ApiError<E> = {
-  success: false
-  error: E
 }
 
-export type ApiResult<T, E> = ApiSuccess<T> | ApiError<E>
+export type ApiError<ErrorCodeType extends string = string> = {
+  success: false
+  errorCode: ErrorCodeType
+  errorMessage: string
+}
 
-/**
- * Makes a POST request and returns a discriminated union.
- * Never throws — all errors are encoded in the return value.
- */
-export async function apiPost<T, E = string>(
+export type ApiResult<T, E extends string = string> = ApiSuccess<T> | ApiError<E>
+
+export async function apiPost<T = void, E extends string = string>(
   endpoint: string,
-  payload: object,
-): Promise<ApiResult<T, E>> {
+  method: string,
+  payload: object = {},
+) {
   try {
-    const response = await api.post<ApiResult<T, E>>(endpoint, payload)
-    response.data['success'] = true
+    const response = await api.post<ApiResult<T, E>>(endpoint, { method: method, ...payload })
     return response.data
   } catch (err) {
-    return {
-      success: false,
-      error: parseError<E>(err),
-    }
+    return parseError<E>(err)
   }
 }
 
-/**
- * Attempts to convert an Axios error into the expected error shape
- */
-function parseError<E>(error: unknown): E {
+function parseError<E extends string>(error: unknown) {
   if (axios.isAxiosError(error)) {
     if (error.response?.data) {
-      error.response.data['success'] = false
-      return error.response.data as E
+      return error.response.data as ApiError<E>
     }
-    return { success: false, message: 'No response received from server' } as unknown as E
+    return {
+      success: false,
+      errorCode: 'internal_error' as E,
+      errorMessage: 'No response received from server',
+    }
   }
 
-  return { success: false, message: 'Unknown error occurred' } as unknown as E
+  return {
+    success: false,
+    errorCode: 'internal_error' as E,
+    errorMessage: 'Unknown error while trying to call an API with axios',
+  }
 }

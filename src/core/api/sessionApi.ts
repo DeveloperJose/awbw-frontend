@@ -1,4 +1,4 @@
-import { apiPost, type ApiResult } from './apiClient'
+import { apiPost } from './apiClient'
 
 // Error codes returned by the session API
 export type SessionApiErrorCode =
@@ -8,34 +8,18 @@ export type SessionApiErrorCode =
   | 'unknown_method'
   | 'internal_error'
 
-// Generic "no data" success payload
-export type NoData = Record<string, never>
-
-// Error shape for session API
-export type SessionApiError = {
-  errorCode: SessionApiErrorCode
-  errorMessage: string
-}
-
-// Payload returned on successful session check
 export interface UserSession {
   username: string
 }
 
-// API calls using new system
-export async function login(
-  username: string,
-  password: string,
-): Promise<ApiResult<NoData, SessionApiError>> {
-  return apiPost<NoData, SessionApiError>('api/user/session.php', {
-    method: 'login',
+export async function login(username: string, password: string) {
+  const data = {
     username,
     password,
-  })
+  }
+  return apiPost<void, SessionApiErrorCode>('api/user/session.php', 'login', data)
 }
 
-export async function getSession(): Promise<ApiResult<UserSession, SessionApiError>> {
-  return apiPost<UserSession, SessionApiError>('api/user/session.php', {
-    method: 'getSession',
-  })
+export async function getSession() {
+  return apiPost<UserSession, SessionApiErrorCode>('api/user/session.php', 'getSession')
 }
