@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import Navbar from '@/core/components/AppNavbar.vue'
-import Footer from '@/core/components/AppFooter.vue'
+import AppNavbar from '@/components/AppNavbar.vue'
+import AppFooter from '@/components/AppFooter.vue'
+import AppSidebar from '@/components/AppSidebar.vue'
 
 // const backgroundImage = "background: url(/terrain/macroland250.png)"
 const backgroundImage = ''
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col auto-scroll-bg" :style="backgroundImage">
-    <Navbar />
+  <div class="auto-scroll-bg flex min-h-screen flex-col" :style="backgroundImage">
+    <AppNavbar />
     <main class="flex-grow">
       <slot />
+      <AppFooter />
     </main>
-    <Footer />
   </div>
 </template>
 

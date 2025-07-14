@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
-import type { UserSession } from '@/core/api/sessionApi'
-import * as sessionApi from '@/core/api/sessionApi'
+import type { UserSession } from '@/api/sessionApi'
+import * as sessionApi from '@/api/sessionApi'
 
 export const useSessionStore = defineStore('session', () => {
   const session = ref<UserSession | null>(null)
