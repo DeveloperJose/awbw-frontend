@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import AppNavbar from '@/components/AppNavbar.vue'
-import AppFooter from '@/components/AppFooter.vue'
-import AppSidebar from '@/components/AppSidebar.vue'
+import AppNavbar from '@/components/AppNavbar.vue';
+import AppFooter from '@/components/AppFooter.vue';
+import AppSidebar from '@/components/AppSidebar.vue';
 
 // const backgroundImage = "background: url(/terrain/macroland250.png)"
-const backgroundImage = ''
+const backgroundImage = '';
 </script>
 
 <template>

@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { onMounted } from 'vue'
-import LayoutDefault from '@/layouts/LayoutDefault.vue'
-import { Button } from '@/components/ui/button'
-import { useSessionStore } from '@/stores/session'
+import { onMounted } from 'vue';
+import LayoutDefault from '@/layouts/LayoutDefault.vue';
+import { Button } from '@/components/ui/button';
+import { useSessionStore } from '@/stores/session';
 
-const sessionStore = useSessionStore()
+const sessionStore = useSessionStore();
 
 onMounted(async () => {
-  await sessionStore.fetchSession()
+  await sessionStore.fetchSession();
   if (sessionStore.error) {
-    await sessionStore.login('dev', 'dev')
-    if (!sessionStore.error) await sessionStore.fetchSession()
+    await sessionStore.login('dev', 'dev');
+    if (!sessionStore.error) await sessionStore.fetchSession();
   }
-})
+});
 </script>
 
 <template>
