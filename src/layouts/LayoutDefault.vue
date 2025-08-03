@@ -1,19 +1,33 @@
 <script setup lang="ts">
 import AppNavbar from '@/components/AppNavbar.vue';
 import AppFooter from '@/components/AppFooter.vue';
-// import AppSidebar from '@/components/AppSidebar.vue';
+import AppSidebar from '@/components/AppSidebar.vue';
+
+import { SidebarProvider, SidebarTrigger } from '@/components/ui/sidebar';
 
 import { usePreferencesStore } from '@/stores/preferences';
 const preferencesStore = usePreferencesStore();
 </script>
 
 <template>
-  <div class="auto-scroll-bg flex min-h-screen flex-col">
-    <AppNavbar />
-    <main class="flex-grow">
-      <slot />
-    </main>
-    <AppFooter />
+  <div class="flex min-h-screen">
+    <SidebarProvider>
+      <!-- Navigation -->
+      <AppSidebar />
+
+      <!-- Content Container -->
+      <div class="auto-scroll-bg flex flex-1 flex-col">
+        <SidebarTrigger />
+
+        <!-- Page Content -->
+        <main class="flex-grow">
+          <slot />
+        </main>
+
+        <!-- Footer -->
+        <AppFooter />
+      </div>
+    </SidebarProvider>
   </div>
 </template>
 
