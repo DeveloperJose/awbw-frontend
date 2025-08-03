@@ -1,19 +1,19 @@
 <script setup lang="ts">
 import AppNavbar from '@/components/AppNavbar.vue';
 import AppFooter from '@/components/AppFooter.vue';
-import AppSidebar from '@/components/AppSidebar.vue';
+// import AppSidebar from '@/components/AppSidebar.vue';
 
-// const backgroundImage = "background: url(/terrain/macroland250.png)"
-const backgroundImage = '';
+import { usePreferencesStore } from '@/stores/preferences';
+const preferencesStore = usePreferencesStore();
 </script>
 
 <template>
-  <div class="auto-scroll-bg flex min-h-screen flex-col" :style="backgroundImage">
+  <div class="auto-scroll-bg flex min-h-screen flex-col">
     <AppNavbar />
     <main class="flex-grow">
       <slot />
-      <AppFooter />
     </main>
+    <AppFooter />
   </div>
 </template>
 
@@ -32,5 +32,9 @@ const backgroundImage = '';
   background-image: url('/terrain/macroland250.png');
   background-repeat: repeat;
   animation: scrollBackground 30s linear infinite;
+}
+
+.dark .auto-scroll-bg {
+  background-image: url('/terrain/macroland250-dark.png');
 }
 </style>

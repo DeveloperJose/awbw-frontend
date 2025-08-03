@@ -8,4 +8,9 @@ import '@/assets/index.css';
 const app = createApp(App);
 app.use(createPinia());
 app.use(router);
+
+import { usePreferencesStore } from '@/stores/preferences';
+const preferencesStore = usePreferencesStore();
+preferencesStore.loadPreferences();
+
 app.mount('#app');

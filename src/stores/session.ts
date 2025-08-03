@@ -1,3 +1,4 @@
+// Preferences stored in the AWBW server
 import { defineStore } from 'pinia';
 import { ref } from 'vue';
 import type { UserSession } from '@/api/sessionApi';
