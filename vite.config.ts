@@ -1,33 +1,33 @@
 // import { fileURLToPath, URL } from 'node:url'
-import path from 'node:path'
-import { defineConfig, loadEnv } from 'vite'
-import vue from '@vitejs/plugin-vue'
-import vueDevTools from 'vite-plugin-vue-devtools'
-import tailwindcss from '@tailwindcss/vite'
+import path from 'node:path';
+import { defineConfig, loadEnv } from 'vite';
+import vue from '@vitejs/plugin-vue';
+import vueDevTools from 'vite-plugin-vue-devtools';
+import tailwindcss from '@tailwindcss/vite';
 
 // https://vite.dev/config/
 export default defineConfig(({ mode }) => {
-  const env = loadEnv(mode, process.cwd(), '')
-  let proxy = {}
+  const env = loadEnv(mode, process.cwd(), '');
+  let proxy = {};
 
   // Check if this is an AWBW Developer or a regular user
   if (env.VITE_PUBLIC_DIR && env.VITE_PUBLIC_DIR.includes('public_html')) {
-    console.log('Preparing build for an official AWBW Developer')
+    console.log('Preparing build for an official AWBW Developer');
     proxy = {
       '/api': {
         target: 'http://localhost',
         changeOrigin: true,
       },
-    }
+    };
   } else {
-    console.log('Preparing build for a regular developer')
+    console.log('Preparing build for a regular developer');
     proxy = {
       '/terrain': {
         target: 'https://awbw.amarriner.com',
         changeOrigin: true,
         secure: true,
       },
-    }
+    };
   }
 
   return {
@@ -53,5 +53,5 @@ export default defineConfig(({ mode }) => {
       // origin: 'https://awbw.amarriner.com',
       // origin: 'http://localhost',
     },
-  }
-})
+  };
+});

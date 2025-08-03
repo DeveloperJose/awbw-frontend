@@ -1,6 +1,17 @@
 import axios from 'axios';
+import { ok, err } from 'neverthrow';
 
-const api = axios.create({
+export type ApiResponse<TSuccess> = TSuccess & {
+  success: true;
+};
+
+export type ApiError<TErrorCode extends string> = {
+  success: false;
+  errorCode: TErrorCode;
+  errorMessage: string;
+};
+
+const apiClient = axios.create({
   baseURL: '',
   withCredentials: true,
   headers: {
@@ -8,46 +19,24 @@ const api = axios.create({
   },
 });
 
-export type ApiSuccess<T> = T & {
-  success: true;
-};
-
-export type ApiError<ErrorCodeType extends string = string> = {
-  success: false;
-  errorCode: ErrorCodeType;
-  errorMessage: string;
-};
-
-export type ApiResult<T, E extends string = string> = ApiSuccess<T> | ApiError<E>;
-
-export async function apiPost<T = void, E extends string = string>(
-  endpoint: string,
-  method: string,
-  payload: object = {},
-) {
+export async function apiPost<TSuccess, TErrorCode extends string>(endpoint: string, body: unknown) {
   try {
-    const response = await api.post<ApiResult<T, E>>(endpoint, { method: method, ...payload });
-    return response.data;
-  } catch (err) {
-    return parseError<E>(err);
-  }
-}
+    const response = await apiClient.post(endpoint, body);
+    const data = response.data;
 
-function parseError<E extends string>(error: unknown) {
-  if (axios.isAxiosError(error)) {
-    if (error.response?.data) {
-      return error.response.data as ApiError<E>;
+    if (data.success) {
+      return ok(data as ApiResponse<TSuccess>);
+    } else {
+      return err(data as ApiError<TErrorCode>);
     }
-    return {
-      success: false as const,
-      errorCode: 'internal_error' as E,
-      errorMessage: 'No response received from server',
-    };
+  } catch (e) {
+    if (axios.isAxiosError(e) && e.response?.data) {
+      return err(e.response.data as ApiError<TErrorCode>);
+    }
+    return err({
+      success: false,
+      errorCode: 'internal_error',
+      errorMessage: e instanceof Error ? e.message : 'Unknown frontend error',
+    });
   }
-
-  return {
-    success: false as const,
-    errorCode: 'internal_error' as E,
-    errorMessage: 'Unknown error while trying to call an API with axios',
-  };
 }

@@ -9,7 +9,7 @@ const sessionStore = useSessionStore();
 const preferencesStore = usePreferencesStore();
 
 onMounted(async () => {
-  // await sessionStore.fetchSession();
+  await sessionStore.fetchSession();
   // if (sessionStore.error) {
   //   await sessionStore.login('dev', 'dev');
   //   if (!sessionStore.error) await sessionStore.fetchSession();
@@ -28,12 +28,6 @@ onMounted(async () => {
         </div>
         <img class="size-6" :src="'/terrain/aw2/bminfantry.gif'" />
       </div>
-
-      <!--<div v-if="sessionStore.loading">Loading session...</div>
-      <div v-else-if="sessionStore.session">Logged in as: {{ sessionStore.session.username }}</div>
-      <div v-else>Not logged in.</div>
-      <div v-if="sessionStore.error" class="text-red-600">Error: {{ sessionStore.error }}</div>
-      -->
     </section>
   </LayoutDefault>
 </template>

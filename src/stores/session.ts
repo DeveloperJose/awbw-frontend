@@ -12,28 +12,46 @@ export const useSessionStore = defineStore('session', () => {
   async function login(username: string, password: string) {
     loading.value = true;
     error.value = null;
+
     const response = await sessionApi.login(username, password);
     loading.value = false;
 
-    if (response.success) {
-      await fetchSession();
-    } else {
-      error.value = response.errorMessage;
+    if (response.isErr()) {
+      error.value = response.error.errorMessage;
+      return response;
     }
+
+    return await fetchSession();
+  }
+
+  async function logout() {
+    loading.value = true;
+    error.value = null;
+    const response = await sessionApi.logout();
+    loading.value = false;
+    if (response.isErr()) {
+      error.value = response.error.errorMessage;
+      return response;
+    }
+
+    session.value = null;
+    return response;
   }
 
   async function fetchSession() {
     loading.value = true;
     error.value = null;
+
     const response = await sessionApi.getSession();
     loading.value = false;
-
-    if (response.success) {
-      session.value = response;
-    } else {
+    if (response.isErr()) {
       session.value = null;
-      error.value = response.errorMessage;
+      error.value = response.error.errorMessage;
+      return response;
     }
+
+    session.value = response.value;
+    return response;
   }
 
   return {
@@ -41,6 +59,7 @@ export const useSessionStore = defineStore('session', () => {
     loading,
     error,
     login,
+    logout,
     fetchSession,
   };
 });

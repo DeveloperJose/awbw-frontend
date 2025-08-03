@@ -14,12 +14,23 @@ export interface UserSession {
 
 export async function login(username: string, password: string) {
   const data = {
+    method: 'login',
     username,
     password,
   };
-  return apiPost<void, SessionApiErrorCode>('api/user/session.php', 'login', data);
+  return apiPost<void, SessionApiErrorCode>('api/user/session.php', data);
+}
+
+export async function logout() {
+  const data = {
+    method: 'logout',
+  };
+  return apiPost<void, SessionApiErrorCode>('api/user/session.php', data);
 }
 
 export async function getSession() {
-  return apiPost<UserSession, SessionApiErrorCode>('api/user/session.php', 'getSession');
+  const data = {
+    method: 'getSession',
+  };
+  return apiPost<UserSession, SessionApiErrorCode>('api/user/session.php', data);
 }
